@@ -1,23 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux'; // storeを作成するための関数
+import { createStore , applyMiddleware } from 'redux'; // storeを作成するための関数,redux-thunkを使うための関数
 import { Provider } from 'react-redux'; // 作成したstoreを全componentに渡すための機能を持つ
+import thunk from 'redux-thunk' // ミドルウェア
 
 import './index.css';
 import reducer from './reducers';
-import App from './components/App';
+import EventsIndex from './components/events_index';
 import * as serviceWorker from './serviceWorker';
 
 // reducerをもとにstoreを作成
 // アプリ内で唯一ののstore
 // 全てのstateが集約される
-const store = createStore(reducer)
+const store = createStore(reducer , applyMiddleware(thunk))
 
 ReactDOM.render(
   // アプリ内の全てのcomponentで使用できるようにする
   // 既存のcomponentをProviderでラッピングし、store属性に作成したstoreを渡す
   <Provider store={store}>
-    <App />
+    <EventsIndex />
   </Provider>,
   document.getElementById('root')
 );
