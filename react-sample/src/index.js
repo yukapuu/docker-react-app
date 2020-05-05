@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import { createStore , applyMiddleware } from 'redux'; // storeを作成するための関数,redux-thunkを使うための関数
 import { Provider } from 'react-redux'; // 作成したstoreを全componentに渡すための機能を持つ
 import thunk from 'redux-thunk' // ミドルウェア
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import './index.css';
 import reducer from './reducers';
 import EventsIndex from './components/events_index';
+import EventsNew from './components/events_new';
 import * as serviceWorker from './serviceWorker';
 
 // reducerをもとにstoreを作成
@@ -18,7 +20,12 @@ ReactDOM.render(
   // アプリ内の全てのcomponentで使用できるようにする
   // 既存のcomponentをProviderでラッピングし、store属性に作成したstoreを渡す
   <Provider store={store}>
-    <EventsIndex />
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/events/new" component={EventsNew} />
+        <Route exact path="/" component={EventsIndex} />
+      </Switch>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
