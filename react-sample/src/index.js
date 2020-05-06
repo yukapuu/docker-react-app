@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'; // 作成したstoreを全componentに�
 import thunk from 'redux-thunk' // ミドルウェア
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import './index.css';
 import reducer from './reducers';
@@ -22,19 +23,23 @@ const enhancer = process.env.NODE_ENV === 'development' ?
 const store = createStore(reducer , enhancer)
 
 ReactDOM.render(
-  // アプリ内の全てのcomponentで使用できるようにする
-  // 既存のcomponentをProviderでラッピングし、store属性に作成したstoreを渡す
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        {/* ルーティングの設定 */}
-        <Route path="/events/new" component={EventsNew} />
-        <Route path="/events/:id" component={EventsShow} />
-        <Route exact path="/" component={EventsIndex} />
-        <Route exact path="/events" component={EventsIndex} />
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
+
+  // material-uiを使えるようにする
+  <MuiThemeProvider>
+    {/* アプリ内の全てのcomponentでstoreを使用できるようにする
+        既存のcomponentをProviderでラッピングし、store属性に作成したstoreを渡す */}
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          {/* ルーティングの設定 */}
+          <Route path="/events/new" component={EventsNew} />
+          <Route path="/events/:id" component={EventsShow} />
+          <Route exact path="/" component={EventsIndex} />
+          <Route exact path="/events" component={EventsIndex} />
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
 
